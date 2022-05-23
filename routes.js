@@ -10,6 +10,8 @@ router.get("/posts" , (req, res, next) => {
   if (Object.keys(req.query).indexOf('tags') != -1){
     res.status(200)
     res.send({"success" : true})
+  }else{
+    res.send({"success" : false})
   }
 
 })
