@@ -1,0 +1,9 @@
+const express = require('express');
+const router = express.Router();
+
+router.get("/ping" , (req, res, next) => {
+  res.status(200);
+  res.send({"success" : true});
+})
+
+module.exports = router;
