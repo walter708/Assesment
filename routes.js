@@ -9,7 +9,7 @@ router.get("/ping" , (req, res, next) => {
 router.get("/posts" , (req, res, next) => {
   if (Object.keys(req.query).indexOf('tags') != -1){
     let tagVal = req.query.tags
-    tagVal = tagVal.split()
+    tagVal = tagVal.split(',')
     let len = tagVal.length
     res.status(200)
     res.send({"success" : len})
