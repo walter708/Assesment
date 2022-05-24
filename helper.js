@@ -43,7 +43,7 @@ const fetchData = async (tagsString) =>{
   const result = []
   const tags = getTags(tagsString);
   
-  if(typeof(tags) == String){
+  if(typeof(tags) === "string"){
     result = await axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tags)
     posts = addNewPost(posts , result.data.posts)
   }else{
