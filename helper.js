@@ -39,8 +39,8 @@ const addNewPost = (uniquePosts , newPost) =>{
 
 
 const fetchData = async (tagsString) =>{
-  posts = []
-  const result = []
+  let posts = []
+  let result = []
   const tags = getTags(tagsString);
   
   if(typeof(tags) === "string"){
