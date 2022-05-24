@@ -13,6 +13,7 @@ router.get("/posts" , async (req, res, next) => {
       const [key , data] = await fetchData(req.query.tags) 
       if(key){
         posts = data
+        res.status(200).send(posts);
         // const [key , value] = sort(req.query, posts)
       }else{
         res.status(500).json({error:String(data)});
