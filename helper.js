@@ -13,7 +13,7 @@ const getTags = tagsString =>{
     tags.trim()
   }
   
-  console.log(tags)
+  console.log(typeof(tags))
   return tags
 }
 
