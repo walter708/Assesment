@@ -12,6 +12,7 @@ const getTags = tagsString =>{
     tags = tagsString 
     tags.trim()
   }
+  
   console.log(tags)
   return tags
 }
@@ -39,24 +40,27 @@ const addNewPost = (uniquePosts , newPost) =>{
 
 const fetchData = async (tagsString) =>{
   posts = []
-  
+  const result = []
   const tags = getTags(tagsString);
-  console.log(tags)
-  const requests = tags.map((tag)=>
-       axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tag)
-  );
-  console.log(requests)
-  try{
-    const result = await Promise.all(requests)
-    
-    result.map(item => {
-      posts = addNewPost(posts , item.data.posts)
-    })  
-  }
-  catch(err){
-    return [false , err]
-  }
   
+  if(typeof(tags) == String){
+    result = await axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tags)
+    posts = addNewPost(posts , result.data.posts)
+  }else{
+        const requests = tags.map((tag)=>
+             axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tag)
+        );
+        try{
+          result = await Promise.all(requests)
+          
+          result.map(item => {
+            posts = addNewPost(posts , item.data.posts)
+          })  
+        }
+        catch(err){
+          return [false , err]
+        }
+      }
   return [true , posts]
 }
 
