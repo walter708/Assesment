@@ -45,9 +45,11 @@ const fetchData = async (tagsString) =>{
     const result = await axios.get("https://api.hatchways.io/assessment/blog/posts?tag=tech") 
     // Promise.all(request)
     
-    result.map(item => {
-      posts = addNewPost(posts , item.data.posts)
-    })
+    posts = addNewPost(posts , result.data.posts)
+    
+    // result.map(item => {
+    //   posts = addNewPost(posts , item.data.posts)
+    // })
     
   }
   catch(err){
