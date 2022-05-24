@@ -108,7 +108,7 @@ const arrangeData = (query , posts) =>{
     }
     else{
       
-      return [400 , "sortBy parameter is invalid"]
+      return [400 , "direction parameter is invalid"]
       
     }
     
