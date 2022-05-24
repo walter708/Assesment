@@ -37,23 +37,23 @@ const fetchData = async (tagsString) =>{
   
   const tags = getTags(tagsString);
   
-  const request = tags.map((tag)=>{
-       axios.get("https://api.hatchways.io/assessment/blog/posts?tag=" + tag)
-  });
+  // const request = tags.map((tag)=>{
+  //      axios.get("https://api.hatchways.io/assessment/blog/posts?tag=tech")
+  // });
   
   try{
-    const result = await Promise.all(request)
+    const result = await axios.get("https://api.hatchways.io/assessment/blog/posts?tag=tech") 
+    // Promise.all(request)
     
     result.map(item => {
       posts = addNewPost(posts , item.data.posts)
     })
     
-    return [true , posts]
-    
   }
   catch(err){
     return [false , err]
   }
+  return [true , posts]
 }
 
 
