@@ -8,8 +8,9 @@ router.get("/ping" , (req, res, next) => {
 
 router.get("/posts" , (req, res, next) => {
   if (Object.keys(req.query).indexOf('tags') != -1){
+    let tagVal = req.query.tags
     res.status(200)
-    res.send({"success" : true})
+    res.send({"success" : tagVal})
   }else{
     res.send({"success" : false})
   }
