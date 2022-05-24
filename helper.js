@@ -56,4 +56,9 @@ const fetchData = async (tagsString) =>{
 }
 
 
+
+const sortBy = (posts, key , dirc) =>{
+  
+}
+
 module.exports = {fetchData}

@@ -11,15 +11,17 @@ router.get("/posts" , async (req, res, next) => {
   if (Object.keys(req.query).indexOf('tags') != -1){
       const [key , data] = await fetchData(req.query.tags) 
       if(key){
-        res.status(200)
-        res.send({"posts" : data})
+        const posts = data
       }else{
         res.status(500).json({error:String(data)});
       }
 
   }else{
-    res.send({"success" : false})
+    res.status(400).json({error:"Tags parameter is required"});
   }
+  
+  
+  
 
 })
 
