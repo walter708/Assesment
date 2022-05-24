@@ -10,7 +10,9 @@ const getTags = tagsString =>{
     }
   }else{
     tags = tagsString 
+    tags.trim()
   }
+  console.log(tags)
   return tags
 }
 
