@@ -45,7 +45,7 @@ const fetchData = async (tagsString) =>{
   
   
   if(tags === ""){
-    return [false , {error:"Tags parameter is required"}]
+    return [false , "Tags parameter is required"]
   }
   if(typeof(tags) === "string"){
     result = await axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tags)
