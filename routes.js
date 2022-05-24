@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {fetchData}= require('./helper')
+const {fetchData , sort}= require('./helper')
 
 router.get("/ping" , (req, res, next) => {
   res.status(200);
@@ -8,10 +8,12 @@ router.get("/ping" , (req, res, next) => {
 })
 
 router.get("/posts" , async (req, res, next) => {
-  if (Object.keys(req.query).indexOf('tags') != -1){
+  const posts = []
+  if (Object.keys(req.query).indexOf('tags') !== -1){
       const [key , data] = await fetchData(req.query.tags) 
       if(key){
-        const posts = data
+        posts = data
+        // const [key , value] = sort(req.query, posts)
       }else{
         res.status(500).json({error:String(data)});
       }
