@@ -38,39 +38,45 @@ const addNewPost = (uniquePosts , newPost) =>{
 }
 
 
-const fetchData = async (tagsString) =>{
-  let posts = []
-  let result = []
-  const tags = getTags(tagsString);
-  
-  
-  if(tags === ""){
-    return [false , "Tags parameter is required"]
-  }
-  if(typeof(tags) === "string"){
-    result = await axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tags)
-    posts = addNewPost(posts , result.data.posts)
+const fetchData = async (query) =>{
+  if (Object.keys(query).indexOf('tags') !== -1){
+        let posts = []
+        let result = []
+        const tags = getTags(query.tags);
+        
+        
+        if(tags === ""){
+          return [400 , "Tags parameter is required"]
+        }
+        if(typeof(tags) === "string"){
+          result = await axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tags)
+          posts = addNewPost(posts , result.data.posts)
+        }else{
+              const requests = tags.map((tag)=>
+                   axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tag)
+              );
+              try{
+                result = await Promise.all(requests)
+                
+                result.map(item => {
+                  posts = addNewPost(posts , item.data.posts)
+                })  
+              }
+              catch(err){
+                return [500 , err]
+              }
+            }
+        return [200 , posts]
   }else{
-        const requests = tags.map((tag)=>
-             axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tag)
-        );
-        try{
-          result = await Promise.all(requests)
-          
-          result.map(item => {
-            posts = addNewPost(posts , item.data.posts)
-          })  
-        }
-        catch(err){
-          return [false , err]
-        }
-      }
-  return [true , posts]
+    return [400 , "Tags parameter is required"]
+  }
 }
 
 
 
-// const sort = (query , posts) =>{
+const arrangeData = (query , posts) =>{
+  
+}
   
 //   const sortByParameters = ['id', 'reads' , 'likes' , 'popularity']
 //   const directionParameters = ['asc', 'desc']
