@@ -2,16 +2,15 @@ const _ = require('lodash')
 const axios = require('axios')
 
 const getTags = tagsString =>{
-  if (tagsString.indexOf(",") === -1){
-    tags = tagsString
+  let tags = ""
+  if (tagsString.includes(",")){
+    tags = tagsString.split(",");
+    for(let i = 0 ; i < tags.length; i++){
+      tags[i] = tags[i].trim();
+    }
   }else{
-  tags = tagsString.split(",");
+    tags = tagsString 
   }
-  
-  for(let i = 0 ; i < tags.length; i++){
-    tags[i] = tags[i].trim();
-  }
-  
   return tags
 }
 
