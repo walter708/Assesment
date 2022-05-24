@@ -16,7 +16,7 @@ const addNewPost = (uniquePosts , newPost) =>{
     added = false;
     
     for(let j = 0 ; j < uniquePosts.length; j++){
-      if (_.isEqual(newPost[i] , uniquePosts[j])){
+      if (_.isEqual(uniquePosts[j] , newPost[i])){
         added = true;
         break;
       }
@@ -37,7 +37,7 @@ const fetchData = async (tagsString) =>{
   
   const tags = getTags(tagsString);
   
-  const request = tags.map(tag =>{
+  const request = tags.map((tag)=>{
        axios.get("https://api.hatchways.io/assessment/blog/posts?tag=" + tag)
   });
   
@@ -45,7 +45,7 @@ const fetchData = async (tagsString) =>{
     const result = await Promise.all(request)
     
     result.map(item => {
-      post = addNewPost(posts , item.data.post)
+      posts = addNewPost(posts , item.data.posts)
     })
     
     return [true , posts]
