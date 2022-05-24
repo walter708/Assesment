@@ -136,10 +136,10 @@ const arrangeData = (query , posts) =>{
   
 const sortValues = (posts, sortBy , direction)=>{
   if(direction === "desc"){
-    posts = posts.sort((a, b) => b[sortBy] > a[sortBy] ? 1 : -1)
+    posts = posts.sort((a, b) => (b[sortBy] > a[sortBy] ? 1 : -1))
     return posts
   }else{
-    posts = posts.sort((a, b) => b[sortBy] < a[sortBy] ? 1 : -1)
+    posts = posts.sort((a, b) => (b[sortBy] < a[sortBy] ? 1 : -1))
     return posts
   }
 }
