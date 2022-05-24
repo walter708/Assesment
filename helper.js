@@ -37,10 +37,10 @@ const fetchData = async (tagsString) =>{
   
   const tags = getTags(tagsString);
   console.log(tags)
-  const requests = tags.map((tag)=>{
+  const requests = tags.map((tag)=>
        axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tag)
-  });
-  
+  );
+  console.log(requests)
   try{
     const result = await Promise.all(requests)
     
