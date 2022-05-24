@@ -10,7 +10,7 @@ router.get("/posts" , (req, res, next) => {
   if (Object.keys(req.query).indexOf('tags') != -1){
     let tagVal = req.query.tags
     tagVal = tagVal.split()
-    let len = tagVal
+    let len = tagVal.length
     res.status(200)
     res.send({"success" : len})
   }else{
