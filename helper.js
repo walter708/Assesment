@@ -102,4 +102,4 @@ const fetchData = async (tagsString) =>{
 // }
 // const sortValues = (posts, sortBy , direction)=>{}
 
-module.exports = {fetchData , sortBy}
+module.exports = {fetchData}
