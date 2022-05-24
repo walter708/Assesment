@@ -36,13 +36,13 @@ const fetchData = async (tagsString) =>{
   posts = []
   
   const tags = getTags(tagsString);
-  
-  const request = tags.map((tag)=>{
-       axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+tag)
+  console.log(tags)
+  const requests = tags.map((tag)=>{
+       axios.get("https://api.hatchways.io/assessment/blog/posts?tag="+ tag)
   });
   
   try{
-    const result = await Promise.all(request)
+    const result = await Promise.all(requests)
     
     result.map(item => {
       posts = addNewPost(posts , item.data.posts)
