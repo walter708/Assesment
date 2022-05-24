@@ -8,7 +8,7 @@ router.get("/ping" , (req, res, next) => {
 })
 
 router.get("/posts" , async (req, res, next) => {
-  const posts = []
+  let posts = []
   if (Object.keys(req.query).indexOf('tags') !== -1){
       const [key , data] = await fetchData(req.query.tags) 
       if(key){
