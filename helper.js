@@ -66,7 +66,7 @@ const fetchData = async (query) =>{
                 return [500 , err]
               }
             }
-          return arrangeData = (query , posts)
+          return arrangeData(query , posts)
   }else{
     return [400 , "Tags parameter is required"]
   }
@@ -86,7 +86,7 @@ const arrangeData = (query , posts) =>{
     
   else if((Object.keys(query).indexOf('sortBy') !== -1) && (Object.keys(query).indexOf('direction') === -1)){
     
-    if(sortByParameters.indexOf(query.sortBy) != -1){
+    if(sortByParameters.indexOf(query.sortBy) !== -1){
       
       return [200 , sortValues(posts , query.sortBy, "asc")]
       
