@@ -1,16 +1,14 @@
 const axios = require('axios');
-const { response } = require('express');
 const request = require("request");
 const {BASE_URL , ping_api} = require("./api_call")
-// const axios = require("axios");
-// const { response } = require("express");
+
 
 
 describe("Back-end Assessment", function () {
   
-  describe("Testing api ping end-point", function () {
+  describe("Testing the ping end-point", function () {
     
-      it("api_ping function Will return the correct respond body", async function () {
+      it("Will return the correct respond body", async function () {
         
         
         const result = await ping_api();
@@ -27,7 +25,7 @@ describe("Back-end Assessment", function () {
         expect(result.status).toBe(200)
 
       })
-      it("Will return the correct status code for step 1 where route is incorrect", async function () {
+      it("Will return the correct status code where route is incorrect", async function () {
         
         request(
           `${BASE_URL}/pings`,
@@ -39,7 +37,7 @@ describe("Back-end Assessment", function () {
       });
   });
   
-  describe("Testing posts end-point",  function () {
+  describe("Testing api/posts end-points",  function () {
   
     it("Will return the proper status code for the correct posts end-point", async function () {
       const result = await axios.get(`${BASE_URL}/posts/?tags=tech`)
@@ -47,7 +45,7 @@ describe("Back-end Assessment", function () {
       expect(ststus).toEqual(200)
     })
     
-    it("Will return the correct status code for posts where route does not have a tag", async function () {
+    it("Will return the correct status code for posts where end-points does not have a tag", async function () {
       request(
         `${BASE_URL}/posts`,
         function (error, response, body) {
@@ -56,7 +54,7 @@ describe("Back-end Assessment", function () {
       );
     })
     
-    it("Will return the correct status code for posts where sortBy (value ='likes' is like) i.e it is invalid", async function () {
+    it("Will return the correct status code for posts where sortBy (value ='likes' is like) is invalid", async function () {
       request(
         `${BASE_URL}/posts/?tags=tech,health&sortBy=like&direction=desc`,
         function (error, response, body) {
@@ -73,7 +71,7 @@ describe("Back-end Assessment", function () {
         }
       );
     })
-    it("Will  pass this test if the each post id unique", async function () {
+    it("Will  pass this test if the each post id is unique", async function () {
       let posts = []
       let postCount = {}
       let check = true
@@ -109,7 +107,7 @@ describe("Back-end Assessment", function () {
       
     });
     
-    it("Will pass this test if they are sorted by reads in ascending order ", async function () {
+    it("Will pass this test if posts are sorted by reads in ascending order ", async function () {
       let posts = []
       let checkSort = true
       let readsArrAce = []

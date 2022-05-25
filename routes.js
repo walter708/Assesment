@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {fetchData , sort}= require('./helper')
+const {fetchData}= require('./helper')
 const apicache = require("apicache");
 
 router.get("/ping" , (req, res, next) => {
