@@ -25,18 +25,18 @@ When running on your local system
  
  
  <pre>
- Field                Type                        Description                     Default          Example 
+ Field                Type                 Description                           Default       Example 
  
- tags                 String               A comma separated list of tags         NA               science,tech
+ tags                 String               A comma separated list of tags         NA           science,tech
  
- sortBy               String              The field to sort the posts by.         id               popularity
+ sortBy               String              The field to sort the posts by.         id           popularity
                                           The accepteble fields are:
                                                  a id
                                                  b reads
                                                  c likes 
                                                  d popularity
                                                  
-  direction          String(optional)     The direction for sorting.The            asc              asc 
+  direction          String(optional)     The direction for sorting.The            asc           asc 
                                           acceptable fields are:
                                                 a decs
                                                 b asc
