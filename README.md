@@ -21,6 +21,29 @@ When running on your local system
 
  You can also access through this link ``` https://walnut-assesment.herokuapp.com/api/posts/tag=tech```
  
+ Here is a description of the query arguments 
+ 
+ 
+ <pre>
+ Field                Type                        Description                     Default              Example 
+ 
+ tags                 String               A comma separated list of tags         NA                   science,tech
+ 
+ sortBy               String              The field to sort the posts by.         id                   popularity
+                                          The accepteble fields are:
+                                                 a id
+                                                 b reads
+                                                 c likes 
+                                                 d popularity
+                                                 
+  direction          String(optional)     The direction for sorting.The            asc                 asc 
+                                          acceptable fields are:
+                                                a decs
+                                                b asc
+                         
+ 
+ </pre>
+                            
 
 
 ### How to Install and Run the Project
