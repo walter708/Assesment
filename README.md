@@ -13,13 +13,14 @@ When running on your local system
 
 ```localhost:3000/api/ping ```
 
-```localhost:3000/api/posts/tag=tech```
+```localhost:3000/api/posts/?tag=tech```
 
-```localhost:3000/api/posts/tag=tech```
+```localhost:3000/api/posts/?tag=science```
 
-```localhost:3000/api/posts/tag=tech```
+```localhost:3000/api/posts/?tag=tech&sortBy=id?```
+```localhost:3000/api/posts/?tag=science&sortBy=reads?```
 
- You can also access through this link ``` https://walnut-assesment.herokuapp.com/api/posts/tag=tech```
+ You can also access through this link ``` https://walnut-assesment.herokuapp.com/api/posts/?tag=tech```
  
  Here is a description of the query arguments 
  
