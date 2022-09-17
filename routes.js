@@ -1,24 +1,10 @@
-const express = require('express');
+import express from 'express'
 const router = express.Router();
-const {fetchData}= require('./helper')
-const apicache = require("apicache");
+import  {Ping, getData} from './controllers/posts/posts.js'
 
-router.get("/ping" , (req, res, next) => {
-  res.status(200);
-  res.send({"success" : true});
-})
 
-const cache = apicache.middleware;
+router.get('/ping' , Ping)
 
-router.get("/posts" ,cache("60 minutes"), async (req, res, next) => {
-  const [key , data] = await fetchData(req.query)
-      if(key === 400){
-        res.status(400).json({ error: String(data)})
-      }else if(key === 500){
-        res.status(500).json({ error: String(data)})
-      }else{
-        res.status(200).send({"posts":data})
-      }
-})
+router.get('/posts', getData)
 
-module.exports = router;
+export default router;

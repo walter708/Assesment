@@ -1,5 +1,4 @@
-const _ = require("lodash");
-const axios = require("axios");
+import {getPosts} from "../../api/posts.js" 
 
 // A function for query preprocessing 
 const getTags = (tagsString) => {
@@ -32,96 +31,80 @@ const getTags = (tagsString) => {
 // A function to remove duplicates and return a array of unique posts 
 
 const addNewPost = (uniquePosts, newPost) => {
+  const postMap = {};
   
-  for (let i = 0; i < newPost.length; i++) {
-    
-    added = false;
-
-    for (let j = 0; j < uniquePosts.length; j++) {
-      
-      if (_.isEqual(uniquePosts[j], newPost[i])) {
-        
-        added = true;
-        break;
-        
-      }
-      
-    }
-
-    if (!added) {
-      
-      uniquePosts.push(newPost[i]);
-      
-    }
-    
+  for(let post of uniquePosts){
+    postMap[post.id] = post;
   }
   
+  for(let post of newPost){
+    if(!(post.id in postMap)){
+      uniquePosts.push(post);
+    }
+  }
   return uniquePosts;
-  
 };
 
 // This function fetchs data from the provided api in a concurrent way
 
-const fetchData = async (query) => {
+export const fetchData = async (query) => {
+  if(query === undefined || query === null){
+    console.log("loading")
+  }else{
+    if (Object?.keys(query)?.indexOf("tags") !== -1) {
+    
+      let posts = [];
+      
+      let result = [];
+      
+      const tags = getTags(query.tags);
+      
   
-  if (Object.keys(query).indexOf("tags") !== -1) {
-    
-    let posts = [];
-    
-    let result = [];
-    
-    const tags = getTags(query.tags);
-    
-
-    if (tags === "") {
+      if (tags === "") {
+        
+        return [400, "Tags parameter is required"];
+        
+      }
+      
+      else if (typeof(tags) === "string") {
+        
+        result = await getPosts(tags)
+        posts = addNewPost(posts, result);
+        
+      } else {
+        
+        const requests = tags.map((tag) =>
+           getPosts(tag)
+        );
+        
+        try {
+          
+          result = await Promise.all(requests);
+  
+          result.map((item) => {
+            
+            posts = addNewPost(posts, item);
+            
+          });
+          
+        } 
+        catch (err) {
+          
+          return [500, err];
+          
+        }
+        
+      }
+      
+      return arrangeData(query, posts);
+      
+    } else {
       
       return [400, "Tags parameter is required"];
       
     }
-    
-    if (typeof tags === "string") {
-      
-      result = await axios.get(
-        
-        "https://api.hatchways.io/assessment/blog/posts?tag=" + tags
-        
-      );
-      posts = addNewPost(posts, result.data.posts);
-      
-    } else {
-      
-      const requests = tags.map((tag) =>
-      
-        axios.get("https://api.hatchways.io/assessment/blog/posts?tag=" + tag)
-        
-      );
-      
-      try {
-        
-        result = await Promise.all(requests);
-
-        result.map((item) => {
-          
-          posts = addNewPost(posts, item.data.posts);
-          
-        });
-        
-      } 
-      catch (err) {
-        
-        return [500, err];
-        
-      }
-      
-    }
-    
-    return arrangeData(query, posts);
-    
-  } else {
-    
-    return [400, "Tags parameter is required"];
-    
   }
+  
   
 };
 
@@ -205,7 +188,7 @@ const sortValues = (posts, sortBy, direction) => {
   if (direction === "desc") {
     
     posts = posts.sort((a, b) => (b[sortBy] > a[sortBy] ? 1 : -1));
-    
+  
     return posts;
     
   } 
@@ -217,4 +200,5 @@ const sortValues = (posts, sortBy, direction) => {
   }
 };
 
-module.exports = { fetchData };
+// module.exports = { fetchData };
+fetchData()
