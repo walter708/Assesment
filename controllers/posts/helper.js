@@ -1,4 +1,41 @@
-import {getPosts} from "../../api/posts.js" 
+import {getPosts} from "../../http.js";
+import  Redis  from 'ioredis';
+import dotenv from 'dotenv';
+dotenv.config()
+
+const cache = async (tags, id, data = []) => {
+  const client = new Redis({
+    port: process.env.REDIS_PORT, // Redis port
+    host: process.env.REDIS_HOST, // Redis host
+    username: "default", // needs Redis >= 6
+    password: process.env.REDIS_PASSWORD,
+    db: 0, // Defaults to 0
+  });
+    let key = "";
+    let outcome = '';
+    if (!(typeof(tags) === "string")){
+      key = JSON.stringify(tags)
+    }else{
+      key = tags;
+    }
+    
+    if (id === "get"){
+    outcome = await client.del(key)
+    outcome = await client.get(key)
+    if(outcome){
+      client.quit()
+      console.log(JSON.parse(outcome))
+      return JSON.parse(outcome);
+    }else{
+      return null
+    }
+  }else{
+    const response = await client.setex(key, 2000, JSON.stringify(data))
+    console.log(response)
+    client.quit();
+  }
+  
+}
 
 // A function for query preprocessing 
 const getTags = (tagsString) => {
@@ -48,27 +85,25 @@ const addNewPost = (uniquePosts, newPost) => {
 // This function fetchs data from the provided api in a concurrent way
 
 export const fetchData = async (query) => {
-  if(query === undefined || query === null){
-    console.log("loading")
-  }else{
     if (Object?.keys(query)?.indexOf("tags") !== -1) {
-    
+      
       let posts = [];
-      
       let result = [];
-      
       const tags = getTags(query.tags);
       
-  
       if (tags === "") {
-        
         return [400, "Tags parameter is required"];
-        
       }
+       
+      const cachedValue = await cache(tags, "get");
+      if(cachedValue !== null){
+        return cachedValue;
+      }
+
       
-      else if (typeof(tags) === "string") {
-        
+     if (typeof(tags) === "string") {
         result = await getPosts(tags)
+        console.log(typeof(result)) 
         posts = addNewPost(posts, result);
         
       } else {
@@ -96,17 +131,17 @@ export const fetchData = async (query) => {
         
       }
       
-      return arrangeData(query, posts);
+      const data = arrangeData(query, posts);
+      const response = await cache(tags, "set", data);
+      console.log(response);
+      return data;
       
     } else {
       
       return [400, "Tags parameter is required"];
       
     }
-  }
-  
-  
-};
+  };
 
 
 
@@ -183,22 +218,23 @@ const arrangeData = (query, posts) => {
   }
 };
 
+// compareFn(a, b) return value   	sort order
+//                   > 0	          sort a after b
+//                   < 0	          sort a before b
+//                  === 0	          keep original order of a and b
 const sortValues = (posts, sortBy, direction) => {
   
   if (direction === "desc") {
     
-    posts = posts.sort((a, b) => (b[sortBy] > a[sortBy] ? 1 : -1));
+    posts = posts.sort((a, b) => (a[sortBy] > b[sortBy] ? -1 : 1));
   
     return posts;
     
   } 
   else {
     
-    posts = posts.sort((a, b) => (b[sortBy] < a[sortBy] ? 1 : -1));
+    posts = posts.sort((a, b) => (a[sortBy] < b[sortBy] ? -1 : 1));
     
     return posts;
   }
 };
-
-// module.exports = { fetchData };
-fetchData()

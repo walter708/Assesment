@@ -1,8 +1,7 @@
 import {fetchData} from './helper.js'
 
 export const Ping =  (req, res) => {
-  res.status(200);
-  res.send({"success" : true});
+  res.status(200).json({"success" : true})
 }
 export const getData = async (req, res) => {
   const [key , data] = await fetchData(req.query)
